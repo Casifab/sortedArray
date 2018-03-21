@@ -1,0 +1,15 @@
+T getNodeValue(unsigned int arr_pos) const {
+  return this->nd_array[arr_pos].value;
+}
+
+void setNodeValue(unsigned int arr_pos, T newValue) {
+  this->nd_array[arr_pos].value= newValue;
+}
+
+unsigned int getNodePosition(unsigned int arr_pos) const {
+  return this->nd_array[arr_pos].logic_pos;
+}
+
+void setNodePosition(unsigned int arr_pos, unsigned int new_pos) {
+  this->nd_array[arr_pos].logic_pos= new_pos;
+}
