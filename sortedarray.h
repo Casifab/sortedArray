@@ -3,8 +3,9 @@
 
 #include <algorithm>
 #include <iostream>
+#include <cstddef>
 
-template <typename T> class sorted_array {
+template <typename T, typename F> class sorted_array {
 
 private:
 
@@ -14,11 +15,18 @@ private:
 
     node():value(), logic_pos(0) {}
     node(const T &newT, unsigned int pos):value(newT), logic_pos(pos) {}
+
+    int getPosition() {
+      return this->logic_pos;
+    }
   };
 
   node *nd_array;
   unsigned int size;
   unsigned int contents;
+  F funct;
+
+  friend class const_iterator;
 
 public:
 
@@ -71,6 +79,7 @@ public:
   }
 
   void addElement(const T &val) {
+    int newLogicPos= 0;
     if(this->contents < this->size) {
       this->nd_array[contents].value= val;
       this->contents++;
@@ -81,16 +90,16 @@ public:
   }
 
   T &operator[](int index) const {
-    return nd_array[index].value;
-  }
-
-  T operator()(int pos) const {
     for(int i= 0; i < size; i++) {
-      if(this->nd_array[i].logic_pos == pos) {
+      if(this->nd_array[i].logic_pos == index) {
         return this->nd_array[i].value;
       }
     }
     return 0;
+  }
+
+  T operator()(int index) const {
+    return nd_array[index].value;
   }
 
   void clear() {
@@ -100,8 +109,22 @@ public:
     contents= 0;
   }
 
+  void printLogicPosition() {
+    for(int i= 0; i < size; i++) {
+      std::cout << nd_array[i].logic_pos << '\n';
+    }
+  }
+
+  void setNodePosition(unsigned int arr_pos, unsigned int new_pos) {
+    this->nd_array[arr_pos].logic_pos= new_pos;
+  }
+
+  class const_iterator;
+  class unsorted_const_iterator;
+
   class const_iterator {
   private:
+
     friend class sorted_array;
     const node *nd;
 
@@ -115,7 +138,34 @@ public:
 		typedef const T*                          pointer;
 		typedef const T&                          reference;
 
-    
+    const_iterator(): nd(0) {}
+    const_iterator(const const_iterator &other): nd(other) {}
+
+    const_iterator& operator=(const const_iterator &other) {
+      nd= other.nd;
+      return *this;
+    }
+
+    ~const_iterator() {
+      nd= 0;
+    }
+
+    reference operator*() const {
+      return nd->value;
+    }
+
+    pointer operator->() const {
+      return &(nd->value);
+    }
+
+    const_iterator& operator++() {
+      for(int i= 0; i < contents; i++) {
+        if(nd_array[i]->logic_pos == (nd->logic_pos+1)) {
+          nd= nd_array[i];
+          return *this;
+        }
+      }
+    }
   };
 };
 #endif

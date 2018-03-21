@@ -13,3 +13,9 @@ unsigned int getNodePosition(unsigned int arr_pos) const {
 void setNodePosition(unsigned int arr_pos, unsigned int new_pos) {
   this->nd_array[arr_pos].logic_pos= new_pos;
 }
+
+sa.setNodePosition(0,3);
+sa.setNodePosition(1,1);
+sa.setNodePosition(2,4);
+sa.setNodePosition(3,0);
+sa.setNodePosition(4,2);

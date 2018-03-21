@@ -13,22 +13,16 @@ int main(int argc, char const *argv[]) {
     sa.addElement(array_int[i]);
   }
 
-  std::cout << "Contenuto dell'array:" << '\n';
-  for (int i = 0; i < sa.getSize(); i++) {
-    std::cout << sa[i] << '\n';
-  }
-std::cout << "---------------------------------------------------" << '\n';
-  std::cout << sa.getSize() << '\n';
-  std::cout << sa.getContents() << '\n';
-std::cout << "----------------------------------------------------" << '\n';
-  std::cout << "Array copia, ordinato secondo posizione logica:" << '\n';
-  sorted_array<int> sa_v2(2);
-  sa_v2= sa;
-  sa_v2.addElement(300);
+  sa.printLogicPosition();
 
-  for (int i = 0; i < sa_v2.getSize(); i++) {
-    std::cout << sa_v2[i] << '\n';
-  }
+  sorted_array<int>::const_iterator i;
+
+/*std::cout << "---------------------------------------------------" << '\n';
+std::cout << "Contenuto dell'array ordinato:" << '\n';
+for (int i = 0; i < sa.getSize(); i++) {
+  std::cout << sa(i) << '\n';
+}
+std::cout << "----------------------------------------------------" << '\n';
 std::cout << "--------------------------------------------------------" << '\n';
 // TEST TIPO PERSONA
   sorted_array<persona> sa1(10);
@@ -66,7 +60,7 @@ std::cout << "--------------------------------------------------------" << '\n';
 
   for (int i = 0; i < sa1_v2.getSize(); i++) {
     sa1_v2[i].printPerson();
-  }
+  }*/
 
   return 0;
 }
