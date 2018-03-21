@@ -13,14 +13,18 @@ int main(int argc, char const *argv[]) {
     sa.addElement(array_int[i]);
   }
 
-  sa.printLogicPosition();
+  sa.setNodePosition(0,3);
+  sa.setNodePosition(1,1);
+  sa.setNodePosition(2,4);
+  sa.setNodePosition(3,0);
+  sa.setNodePosition(4,2);
 
-  sorted_array<int>::const_iterator i;
+
 
 /*std::cout << "---------------------------------------------------" << '\n';
 std::cout << "Contenuto dell'array ordinato:" << '\n';
 for (int i = 0; i < sa.getSize(); i++) {
-  std::cout << sa(i) << '\n';
+  std::cout << sa[i] << '\n';
 }
 std::cout << "----------------------------------------------------" << '\n';
 std::cout << "--------------------------------------------------------" << '\n';

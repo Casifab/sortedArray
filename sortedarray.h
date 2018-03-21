@@ -4,8 +4,9 @@
 #include <algorithm>
 #include <iostream>
 #include <cstddef>
+#include <functional>
 
-template <typename T, typename F> class sorted_array {
+template <typename T, typename F= std::less<T> > class sorted_array {
 
 private:
 
@@ -89,7 +90,7 @@ public:
     }
   }
 
-  T &operator[](int index) const {
+  T operator[](int index) const {
     for(int i= 0; i < size; i++) {
       if(this->nd_array[i].logic_pos == index) {
         return this->nd_array[i].value;
@@ -166,6 +167,8 @@ public:
         }
       }
     }
+
+
   };
 };
 #endif
