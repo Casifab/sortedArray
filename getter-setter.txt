@@ -19,3 +19,9 @@ sa.setNodePosition(1,1);
 sa.setNodePosition(2,4);
 sa.setNodePosition(3,0);
 sa.setNodePosition(4,2);
+
+void stampaNodi() {
+  for(int i= 0; i < contents; i++) {
+    std::cout << "[" << nd_array[i].value << ", " << nd_array[i].logic_pos << ", " << contents << ", " << size << "]" << '\n';
+  }
+}

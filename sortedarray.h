@@ -15,7 +15,7 @@ private:
     unsigned int logic_pos;
 
     node():value(), logic_pos(0) {}
-    node(const T &newT, unsigned int pos):value(newT), logic_pos(pos) {}
+    node(const T &newT, unsigned int pos): value(newT), logic_pos(pos) {}
 
     int getPosition() {
       return this->logic_pos;
@@ -25,29 +25,37 @@ private:
   node *nd_array;
   unsigned int size;
   unsigned int contents;
+  int *pos_array;
   F funct;
 
   friend class const_iterator;
 
 public:
 
-  sorted_array(): size(0), nd_array(0), contents(0) {
+  sorted_array(): size(0), nd_array(0), contents(0), pos_array(0) {
   }
 
-  explicit sorted_array(unsigned int sz= 100): size(sz), nd_array(0), contents(0) {
+  explicit sorted_array(unsigned int sz= 100):
+    size(sz), nd_array(0), contents(0), pos_array(0) {
     nd_array= new node[size];
+    pos_array= new int[size];
   }
 
-  sorted_array(const sorted_array &other): size(0), nd_array(0), contents(0) {
+  sorted_array(const sorted_array &other):
+    size(0), nd_array(0), contents(0), pos_array(0) {
     size= other.getSize();
     nd_array= new node[size];
+    contents= other.getContents();
+    pos_array= new int[size];
 
-    for(int i= 0; i < size; i++) {
+    for(int i= 0; i < contents; i++) {
       nd_array[i].value= other.nd_array[i].value;
       nd_array[i].logic_pos= other.nd_array[i].logic_pos;
     }
 
-    contents= other.getContents();
+    for(int i= 0; i < contents; i++) {
+      pos_array[i]= other.pos_array[i];
+    }
   }
 
   sorted_array &operator=(const sorted_array &other) {
@@ -56,9 +64,15 @@ public:
       std::swap(tmp.size, size);
       std::swap(tmp.nd_array, nd_array);
       std::swap(tmp.contents, contents);
-      for (int i = 0; i < size; i++) {
-        nd_array[i].value= other.nd_array[i].value;
-        nd_array[i].logic_pos= other.nd_array[i].logic_pos;
+      std::swap(tmp.pos_array, pos_array);
+
+      for (int i = 0; i < contents; i++) {
+        std::swap(tmp.nd_array[i].value, nd_array[i].value);
+        std::swap(tmp.nd_array[i].logic_pos, nd_array[i].logic_pos);
+      }
+
+      for(int i= 0; i < contents; i++) {
+        std::swap(tmp.pos_array[i], pos_array[i]);
       }
 
       return *this;
@@ -69,6 +83,9 @@ public:
     delete [] nd_array;
     nd_array= 0;
     size= 0;
+    contents= 0;
+    delete [] pos_array;
+    pos_array= 0;
   }
 
   unsigned int getSize() const {
@@ -80,10 +97,28 @@ public:
   }
 
   void addElement(const T &val) {
-    int newLogicPos= 0;
-    if(this->contents < this->size) {
-      this->nd_array[contents].value= val;
-      this->contents++;
+    if(contents < size) {
+      if(contents == 0) {
+        nd_array[contents].value= val;
+        contents++;
+      }
+      else {
+        T min= val;
+        int pos_min= 0;
+        for(int i= 0; i < contents; i++) {
+          if(F(val, nd_array[i]) && !(F(min, nd_array[i]))) {
+            min= nd_array[i];
+            pos_min= i;
+          }
+        }
+        nd_array[contents].value= val;
+        pos_array[contents]= pos_array[pos_min];
+        pos_array[pos_min]+= 1;
+        for(int i= 0; i < contents; i++) {
+          if(pos_array[i] > pos_array[pos_min])
+            pos_array[i]+= 1;
+        }
+      }
     }
     else {
       std::cout << "Array pieno, impossibile inserire elemento" << std::endl;
@@ -91,9 +126,9 @@ public:
   }
 
   T operator[](int index) const {
-    for(int i= 0; i < size; i++) {
-      if(this->nd_array[i].logic_pos == index) {
-        return this->nd_array[i].value;
+    for(int i= 0; i < contents; i++) {
+      if(nd_array[i].logic_pos == index) {
+        return nd_array[i].value;
       }
     }
     return 0;
@@ -108,10 +143,13 @@ public:
     delete[] nd_array;
     nd_array= tmp;
     contents= 0;
+    int *tmpInt= new int[size];
+    delete[] pos_array;
+    pos_array= tmpInt;
   }
 
   void printLogicPosition() {
-    for(int i= 0; i < size; i++) {
+    for(int i= 0; i < contents; i++) {
       std::cout << nd_array[i].logic_pos << '\n';
     }
   }
@@ -140,7 +178,7 @@ public:
 		typedef const T&                          reference;
 
     const_iterator(): nd(0) {}
-    const_iterator(const const_iterator &other): nd(other) {}
+    const_iterator(const const_iterator &other): nd(other.nd) {}
 
     const_iterator& operator=(const const_iterator &other) {
       nd= other.nd;
@@ -160,15 +198,35 @@ public:
     }
 
     const_iterator& operator++() {
-      for(int i= 0; i < contents; i++) {
-        if(nd_array[i]->logic_pos == (nd->logic_pos+1)) {
-          nd= nd_array[i];
+          nd= nd+1;
           return *this;
-        }
-      }
     }
 
+    const_iterator operator++(int) {
+      const_iterator tmp(*this);
+      nd= nd+1;
+      return tmp;
+    }
 
+		bool operator==(const const_iterator &other) const {
+			return nd == other.nd;
+		}
+
+		bool operator!=(const const_iterator &other) const {
+			return nd != other.nd;
+		}
   };
+
+  const_iterator begin() const {
+    for(int i= 0; i < contents; i++)
+      if(nd_array[i].logic_pos == 0)
+        return const_iterator(nd_array+i);
+  }
+
+  const_iterator end() const {
+    for(int i= 0; i < contents; i++)
+      if(nd_array[i].logic_pos == contents-1)
+        return const_iterator(nd_array+i);
+  }
 };
 #endif

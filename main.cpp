@@ -6,29 +6,62 @@
 
 int main(int argc, char const *argv[]) {
 // TEST TIPO INT
-  sorted_array<int> sa(10);
+  sorted_array<int> sa(25);
   int array_int[5]= {43,6,100,1,11};
 
   for (int i=0; i < 5; i++) {
     sa.addElement(array_int[i]);
   }
+  
+  sa.printLogicPosition();
 
+/*
   sa.setNodePosition(0,3);
   sa.setNodePosition(1,1);
   sa.setNodePosition(2,4);
   sa.setNodePosition(3,0);
-  sa.setNodePosition(4,2);
+  sa.setNodePosition(4,2);*/
+/*
+  sorted_array<int>::const_iterator i, ie;
+  i= sa.begin();
+  ie= sa.end();
 
+  std::cout << "-----------------------------------------------------" << '\n';
+  std::cout << "Print Testa e Coda:" << '\n';
+  std::cout << *i << '\n';
+  std::cout << *ie << '\n';
+  std::cout << "Un passo avanti:" << '\n';
+  ++i;
+  std::cout << *i << '\n';
+  std::cout << "-----------------------------------------------------" << '\n';
+*/
+  std::cout << "Array per ordine di inserimento:" << '\n';
+  for (int i = 0; i < sa.getContents(); i++) {
+    std::cout << sa(i) << '\n';
+  }
 
+  std::cout << "---------------------------------------------------" << '\n';
+  std::cout << "Array per ordine logico:" << '\n';
+  for (int i = 0; i < sa.getContents(); i++) {
+    std::cout << sa[i] << '\n';
+  }
+/*
+  sorted_array<int> ciccio= sa;
+  std::cout << "---------------------------------------------------" << '\n';
+  std::cout << "Array CICCIO per ordine logico:" << '\n';
+  for (int i = 0; i < ciccio.getContents(); i++) {
+    std::cout << ciccio[i] << '\n';
+  }
 
-/*std::cout << "---------------------------------------------------" << '\n';
-std::cout << "Contenuto dell'array ordinato:" << '\n';
-for (int i = 0; i < sa.getSize(); i++) {
-  std::cout << sa[i] << '\n';
-}
-std::cout << "----------------------------------------------------" << '\n';
-std::cout << "--------------------------------------------------------" << '\n';
-// TEST TIPO PERSONA
+  std::cout << "---------------------------------------------------" << '\n';
+  std::cout << "Per ordine inserimento:" << '\n';
+  for (int i = 0; i < ciccio.getContents(); i++) {
+    std::cout << ciccio(i) << '\n';
+  }
+  */
+  /*std::cout << "----------------------------------------------------" << '\n';
+  std::cout << "--------------------------------------------------------" << '\n';
+  // TEST TIPO PERSONA
   sorted_array<persona> sa1(10);
   persona p1= {"Francesca", "Baro", 22, false};
   persona p2= {"Fabio", "Casiraghi", 22, true};
