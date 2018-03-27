@@ -13,7 +13,7 @@ private:
   T *nd_array;
   unsigned int size;
   unsigned int contents;
-  int *pos_array;
+  T* *pos_array;
   F funct;
 
   friend class const_iterator;
@@ -27,7 +27,7 @@ public:
   explicit sorted_array(unsigned int sz= 100):
     size(sz), nd_array(0), contents(0), pos_array(0) {
     nd_array= new T[size];
-    pos_array= new int[size];
+    pos_array= new T*[size];
   }
 
   sorted_array(const sorted_array &other):
@@ -35,14 +35,14 @@ public:
     size= other.getSize();
     nd_array= new T[size];
     contents= other.getContents();
-    pos_array= new int[size];
+    pos_array= new T*[size];
 
     for(int i= 0; i < contents; i++) {
       nd_array[i]= other.nd_array[i];
     }
 
     for(int i= 0; i < contents; i++) {
-      pos_array[i]= other.pos_array[i];
+      pos_array[i]= other.pos_array+i;
     }
   }
 
@@ -83,35 +83,28 @@ public:
     return this->contents;
   }
 
-  int findNewPos(const T &val) {
-    for(int i= 0; i < contents; i++) {
-      for(int j= 0; j < contents; j++) {
-        if(pos_array[j] == i && funct(val,nd_array[j])) {
-          return i;
-        }
-      }
-    }
-  }
-
   void addElement(const T &val) {
     if(contents < size) {
       if(contents == 0) {
         nd_array[0]= val;
-        pos_array[0]= 0;
+        pos_array[0]= nd_array+0;
         contents++;
       }
       else {
-        pos_array[contents]= -1;
         nd_array[contents]= val;
-        pos_array[contents]= findNewPos(val);
-        if(pos_array[contents] == -1){
-          pos_array[contents]= contents;
+        T *tmp= nd_array+contents;
+        bool flag= true;
+        for (int i = 0; i < contents; i++) {
+          if(funct(*tmp,*pos_array[i])) {
+            flag= false;
+            std::swap(tmp, pos_array[i]);
+          }
+        }
+        if(flag) {
+          pos_array[contents]= nd_array+contents;
         }
         else {
-          for(int i= 0; i < contents; i++) {
-            if(pos_array[i] >= pos_array[contents])
-              pos_array[i]+= 1;
-          }
+          pos_array[contents]= tmp;
         }
         contents++;
       }
@@ -122,11 +115,7 @@ public:
   }
 
   T operator[](int index) const {
-    for(int i= 0; i < contents; i++) {
-      if(pos_array[i] == index) {
-        return nd_array[i];
-      }
-    }
+        return *pos_array[index];
   }
 
   T operator()(int index) const {
@@ -138,9 +127,9 @@ public:
     delete[] nd_array;
     nd_array= tmp;
     contents= 0;
-    int *tmpInt= new int[size];
+    T* *tmpPos= new T*[size];
     delete[] pos_array;
-    pos_array= tmpInt;
+    pos_array= tmpPos;
   }
 
   class const_iterator;
@@ -150,25 +139,23 @@ public:
   private:
 
     friend class sorted_array;
-    const T *tvalue;
-    int pos;
+    const T* *tvalue;
 
-    const_iterator(const T *val, int p): tvalue(val), pos(p) {}
+    const_iterator(T* *val): tvalue(val) {}
 
   public:
 
     typedef std::bidirectional_iterator_tag   iterator_category;
-		typedef T                                 value_type;
+		typedef T*                                 value_type;
 		typedef ptrdiff_t                         difference_type;
-		typedef const T*                          pointer;
-		typedef const T&                          reference;
+		typedef const T**                          pointer;
+		typedef const T*&                          reference;
 
-    const_iterator(): tvalue(0), pos(0) {}
-    const_iterator(const const_iterator &other): tvalue(other.tvalue), pos(other.pos) {}
+    const_iterator(): tvalue(0) {}
+    const_iterator(const const_iterator &other): tvalue(other.tvalue) {}
 
     const_iterator& operator=(const const_iterator &other) {
       tvalue= other.tvalue;
-      pos= other.pos;
       return *this;
     }
 
@@ -181,7 +168,7 @@ public:
     }
 
     pointer operator->() const {
-      return &(tvalue);
+      return &(*tvalue);
     }
 
     bool operator==(const const_iterator &other) const {
@@ -193,25 +180,17 @@ public:
   	}
 
     const_iterator operator++() {
-      for(int i= 0; i < contents; i++) {
-        if(pos_array[i] == pos+1) {
-          return const_iterator(nd_array+i);
-        }
-      }
-
+          return const_iterator(**tvalue+1);
     }
+
   };
 
   const_iterator begin() const {
-    for(int i= 0; i < contents; i++)
-      if(pos_array[i] == 0)
-        return const_iterator(nd_array+i, 0);
+        return const_iterator(pos_array+0);
   }
 
   const_iterator end() const {
-    for(int i= 0; i < contents; i++)
-      if(pos_array[i] == contents-1)
-        return const_iterator(nd_array+i, contents);
+        return const_iterator(pos_array+contents-1);
   }
 
   class unsorted_const_iterator {

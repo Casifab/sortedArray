@@ -18,7 +18,7 @@ struct vecchiaia {
 
 int main(int argc, char const *argv[]) {
 
-  persona p1= {"Francesca", "Baro", 22, 0};
+  /*persona p1= {"Francesca", "Baro", 22, 0};
   persona p2= {"Fabio", "Casiraghi", 22, 1};
   persona p3= {"peirpaloeo", "asfcasa", 45, 0};
   persona p4= {"Simba", "Nala", 1, 1};
@@ -57,10 +57,10 @@ int main(int argc, char const *argv[]) {
 
 
 
-  /*sorted_array<int,maggiore> sa(25);
-  int array_int[]= {43,6,100,1,11, 4, 7 ,0, 3333,-777};
+  */sorted_array<int,maggiore> sa(25);
+  int array_int[]= {43,6,100,1,11};
 
-  for (int i=0; i < 10; i++) {
+  for (int i=0; i < 5; i++) {
     sa.addElement(array_int[i]);
   }
 
@@ -75,7 +75,7 @@ int main(int argc, char const *argv[]) {
     std::cout << sa[i] << '\n';
   }
 
-  sa.clear();
+  /*sa.clear();
 
   std::cout << "Array per ordine di inserimento:" << '\n';
   for (int i = 0; i < sa.getContents(); i++) {
@@ -98,15 +98,17 @@ int main(int argc, char const *argv[]) {
   }
 
   std::cout << "---------------------------------------------------" << '\n';
-
-  /*sorted_array<int,maggiore>::unsorted_const_iterator i, ie;
-  i= sa.ubegin();
-  ie= sa.uend();
-
-  std::cout << *i << '\n';
-  i= ++i;
-  std::cout << *(ie--) << '\n';
-  std::cout << *(--ie) << '\n';
 */
+  sorted_array<int,maggiore>::const_iterator i, ie;
+  i= sa.begin();
+  ie= sa.end();
+
+  std::cout << "------------------------------------------" << std::endl;
+  std::cout << *i << std::endl;
+  //std::cout << *++i << std::endl;
+  std::cout << *ie << std::endl;
+  //std::cout << *ie-- << std::endl;
+
+  
   return 0;
 }
