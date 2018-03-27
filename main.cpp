@@ -34,9 +34,11 @@ int main(int argc, char const *argv[]) {
     pers(i).printPerson();
   }
 
+  sorted_array<persona,vecchiaia>::const_iterator i, ie;
+
   std::cout << "Array per ordine di età:" << '\n';
-  for (int i = 0; i < pers.getContents(); i++) {
-    pers[i].printPerson();
+  for (i= pers.begin(); i != pers.end(); ++i) {
+    i.printPerson();
   }
   persona pp= {"Gigio", "Cuo", 30, 1};
   pers.addElement(pp);
@@ -56,9 +58,9 @@ int main(int argc, char const *argv[]) {
 
 
   /*sorted_array<int,maggiore> sa(25);
-  int array_int[]= {43,6,100,1,11, 4, 7 ,23, 3333};
+  int array_int[]= {43,6,100,1,11, 4, 7 ,0, 3333,-777};
 
-  for (int i=0; i < 9; i++) {
+  for (int i=0; i < 10; i++) {
     sa.addElement(array_int[i]);
   }
 

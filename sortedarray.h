@@ -151,8 +151,9 @@ public:
 
     friend class sorted_array;
     const T *tvalue;
+    int pos;
 
-    const_iterator(const T *val): tvalue(val) {}
+    const_iterator(const T *val, int p): tvalue(val), pos(p) {}
 
   public:
 
@@ -162,11 +163,12 @@ public:
 		typedef const T*                          pointer;
 		typedef const T&                          reference;
 
-    const_iterator(): tvalue(0) {}
-    const_iterator(const const_iterator &other): tvalue(other.tvalue) {}
+    const_iterator(): tvalue(0), pos(0) {}
+    const_iterator(const const_iterator &other): tvalue(other.tvalue), pos(other.pos) {}
 
     const_iterator& operator=(const const_iterator &other) {
       tvalue= other.tvalue;
+      pos= other.pos;
       return *this;
     }
 
@@ -191,20 +193,25 @@ public:
   	}
 
     const_iterator operator++() {
-      
+      for(int i= 0; i < contents; i++) {
+        if(pos_array[i] == pos+1) {
+          return const_iterator(nd_array+i);
+        }
+      }
+
     }
   };
 
   const_iterator begin() const {
     for(int i= 0; i < contents; i++)
       if(pos_array[i] == 0)
-        return const_iterator(nd_array+i);
+        return const_iterator(nd_array+i, 0);
   }
 
   const_iterator end() const {
     for(int i= 0; i < contents; i++)
       if(pos_array[i] == contents-1)
-        return const_iterator(nd_array+i);
+        return const_iterator(nd_array+i, contents);
   }
 
   class unsorted_const_iterator {
