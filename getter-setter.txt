@@ -25,3 +25,18 @@ void stampaNodi() {
     std::cout << "[" << nd_array[i].value << ", " << nd_array[i].logic_pos << ", " << contents << ", " << size << "]" << '\n';
   }
 }
+
+nd_array[contents]= val;
+int pos= 0;
+bool notFound= true;
+while (notFound) {
+  pos= findLogicPos();
+  if(val < nd_array[pos]) {
+    pos_array[contents]= pos_array[pos];
+  }
+}
+for(int i= 0; i < contents; i++) {
+  if(pos_array[i] >= pos_array[contents])
+    pos_array[i]+= 1;
+}
+contents++;

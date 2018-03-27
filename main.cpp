@@ -4,37 +4,64 @@
 #include <string>
 #include <algorithm>
 
-int main(int argc, char const *argv[]) {
-// TEST TIPO INT
-  sorted_array<int> sa(25);
-  int array_int[5]= {43,6,100,1,11};
+struct maggiore {
+  bool operator()(const int a, const int b) const {
+    return a > b;
+  }
+};
 
-  for (int i=0; i < 5; i++) {
+struct vecchiaia {
+  bool operator()(const persona &a, const persona &b) const {
+    return a.eta > b.eta;
+  }
+};
+
+int main(int argc, char const *argv[]) {
+
+  persona p1= {"Francesca", "Baro", 22, 0};
+  persona p2= {"Fabio", "Casiraghi", 22, 1};
+  persona p3= {"peirpaloeo", "asfcasa", 45, 0};
+  persona p4= {"Simba", "Nala", 1, 1};
+
+  sorted_array<persona,vecchiaia> pers(10);
+  pers.addElement(p1);
+  pers.addElement(p2);
+  pers.addElement(p3);
+  pers.addElement(p4);
+
+  std::cout << "Array per ordine di inserimento:" << '\n';
+  for (int i = 0; i < pers.getContents(); i++) {
+    pers(i).printPerson();
+  }
+
+  std::cout << "Array per ordine di età:" << '\n';
+  for (int i = 0; i < pers.getContents(); i++) {
+    pers[i].printPerson();
+  }
+  persona pp= {"Gigio", "Cuo", 30, 1};
+  pers.addElement(pp);
+
+  std::cout << "Array per ordine di età:" << '\n';
+  for (int i = 0; i < pers.getContents(); i++) {
+    pers[i].printPerson();
+  }
+
+  sorted_array<persona,vecchiaia> asf= pers;
+
+  std::cout << "Array per ordine di età:" << '\n';
+  for (int i = 0; i < asf.getContents(); i++) {
+    asf[i].printPerson();
+  }
+
+
+
+  /*sorted_array<int,maggiore> sa(25);
+  int array_int[]= {43,6,100,1,11, 4, 7 ,23, 3333};
+
+  for (int i=0; i < 9; i++) {
     sa.addElement(array_int[i]);
   }
-  
-  sa.printLogicPosition();
 
-/*
-  sa.setNodePosition(0,3);
-  sa.setNodePosition(1,1);
-  sa.setNodePosition(2,4);
-  sa.setNodePosition(3,0);
-  sa.setNodePosition(4,2);*/
-/*
-  sorted_array<int>::const_iterator i, ie;
-  i= sa.begin();
-  ie= sa.end();
-
-  std::cout << "-----------------------------------------------------" << '\n';
-  std::cout << "Print Testa e Coda:" << '\n';
-  std::cout << *i << '\n';
-  std::cout << *ie << '\n';
-  std::cout << "Un passo avanti:" << '\n';
-  ++i;
-  std::cout << *i << '\n';
-  std::cout << "-----------------------------------------------------" << '\n';
-*/
   std::cout << "Array per ordine di inserimento:" << '\n';
   for (int i = 0; i < sa.getContents(); i++) {
     std::cout << sa(i) << '\n';
@@ -45,59 +72,39 @@ int main(int argc, char const *argv[]) {
   for (int i = 0; i < sa.getContents(); i++) {
     std::cout << sa[i] << '\n';
   }
-/*
-  sorted_array<int> ciccio= sa;
-  std::cout << "---------------------------------------------------" << '\n';
-  std::cout << "Array CICCIO per ordine logico:" << '\n';
-  for (int i = 0; i < ciccio.getContents(); i++) {
-    std::cout << ciccio[i] << '\n';
+
+  sa.clear();
+
+  std::cout << "Array per ordine di inserimento:" << '\n';
+  for (int i = 0; i < sa.getContents(); i++) {
+    std::cout << sa(i) << '\n';
   }
 
   std::cout << "---------------------------------------------------" << '\n';
-  std::cout << "Per ordine inserimento:" << '\n';
-  for (int i = 0; i < ciccio.getContents(); i++) {
-    std::cout << ciccio(i) << '\n';
-  }
-  */
-  /*std::cout << "----------------------------------------------------" << '\n';
-  std::cout << "--------------------------------------------------------" << '\n';
-  // TEST TIPO PERSONA
-  sorted_array<persona> sa1(10);
-  persona p1= {"Francesca", "Baro", 22, false};
-  persona p2= {"Fabio", "Casiraghi", 22, true};
-  persona p3= {"Laura", "Fino", 56, false};
-  persona p4= {"Paolo", "Rossi", 123, true};
-
-  sa1.addElement(p1);
-  sa1.addElement(p2);
-  sa1.addElement(p3);
-  sa1.addElement(p4);
-
-  std::cout << "Contenuto dell'array:" << '\n';
-  for (int i = 0; i < sa1.getSize(); i++) {
-    sa1[i].printPerson();
+  std::cout << "Array per ordine logico:" << '\n';
+  for (int i = 0; i < sa.getContents(); i++) {
+    std::cout << sa[i] << '\n';
   }
 
-  std::cout << "Array copia, con operatore =, con aggiunta elemento:" << '\n';
-  sorted_array<persona> sa1_v2(500);
-  sa1_v2= sa1;
+  sa.addElement(42);
+  sa.addElement(8);
+  sa.addElement(50);
 
-  persona nuova= {"Gioppo", "Prova", 23, 0};
-
-  sa1_v2.addElement(nuova);
-
-  for (int i = 0; i < sa1_v2.getSize(); i++) {
-    sa1_v2[i].printPerson();
+  std::cout << "Array per ordine di inserimento:" << '\n';
+  for (int i = 0; i < sa.getContents(); i++) {
+    std::cout << sa(i) << '\n';
   }
 
-  std::cout << "------------------------------------------------------" << '\n';
-  std::cout << "Svuoto l'array:" << '\n';
+  std::cout << "---------------------------------------------------" << '\n';
 
-  sa1_v2.clear();
+  /*sorted_array<int,maggiore>::unsorted_const_iterator i, ie;
+  i= sa.ubegin();
+  ie= sa.uend();
 
-  for (int i = 0; i < sa1_v2.getSize(); i++) {
-    sa1_v2[i].printPerson();
-  }*/
-
+  std::cout << *i << '\n';
+  i= ++i;
+  std::cout << *(ie--) << '\n';
+  std::cout << *(--ie) << '\n';
+*/
   return 0;
 }
