@@ -42,7 +42,7 @@ public:
     }
 
     for(int i= 0; i < contents; i++) {
-      pos_array[i]= other.pos_array+i;
+      pos_array[i]= other.pos_array[i];
     }
   }
 
@@ -93,19 +93,12 @@ public:
       else {
         nd_array[contents]= val;
         T *tmp= nd_array+contents;
-        bool flag= true;
         for (int i = 0; i < contents; i++) {
           if(funct(*tmp,*pos_array[i])) {
-            flag= false;
             std::swap(tmp, pos_array[i]);
           }
         }
-        if(flag) {
-          pos_array[contents]= nd_array+contents;
-        }
-        else {
-          pos_array[contents]= tmp;
-        }
+        pos_array[contents]= tmp;
         contents++;
       }
     }
@@ -139,9 +132,9 @@ public:
   private:
 
     friend class sorted_array;
-    const T* *tvalue;
+    T* const *tvalue;
 
-    const_iterator(T* *val): tvalue(val) {}
+    const_iterator(T* const &val): tvalue(&val) {}
 
   public:
 
@@ -149,7 +142,7 @@ public:
 		typedef T*                                 value_type;
 		typedef ptrdiff_t                         difference_type;
 		typedef const T**                          pointer;
-		typedef const T*&                          reference;
+		typedef const T&                          reference;
 
     const_iterator(): tvalue(0) {}
     const_iterator(const const_iterator &other): tvalue(other.tvalue) {}
@@ -164,7 +157,7 @@ public:
     }
 
     reference operator*() const {
-      return *tvalue;
+      return (**tvalue);
     }
 
     pointer operator->() const {
@@ -180,17 +173,33 @@ public:
   	}
 
     const_iterator operator++() {
-          return const_iterator(**tvalue+1);
+      return const_iterator(*(tvalue+1));
+    }
+
+    const_iterator operator++(int) {
+      const_iterator tmp(*this);
+      tmp.tvalue= this->tvalue+1;
+      return tmp;
+    }
+
+    const_iterator operator--() {
+      return const_iterator(*(tvalue-1));
+    }
+
+    const_iterator operator--(int) {
+      const_iterator tmp(*this);
+      tmp.tvalue= this->tvalue-1;
+      return tmp;
     }
 
   };
 
   const_iterator begin() const {
-        return const_iterator(pos_array+0);
+        return const_iterator(pos_array[0]);
   }
 
   const_iterator end() const {
-        return const_iterator(pos_array+contents-1);
+        return const_iterator(pos_array[contents-1]);
   }
 
   class unsorted_const_iterator {
