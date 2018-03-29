@@ -6,6 +6,17 @@
 #include <cstddef>
 #include <functional>
 
+/**
+@file sortedarray.h
+@brief Dichiarazione classe sorted_array.h
+**/
+
+/**
+@brief Sorted Array templato
+
+Classe che rappresenta un array di elementi che posso essere letti per ordine
+di inserimento in memoria o per ordine logico, dettato dal funtore funct
+**/
 template <typename T, typename F= std::less<T> > class sorted_array {
 
 private:
@@ -172,23 +183,25 @@ public:
   		return tvalue != other.tvalue;
   	}
 
-    const_iterator operator++() {
-      return const_iterator(*(tvalue+1));
+    const_iterator& operator++() {
+      tvalue= tvalue+1;
+      return *this;
     }
 
     const_iterator operator++(int) {
       const_iterator tmp(*this);
-      tmp.tvalue= this->tvalue+1;
+      tvalue= tvalue+1;
       return tmp;
     }
 
-    const_iterator operator--() {
-      return const_iterator(*(tvalue-1));
+    const_iterator& operator--() {
+      tvalue= tvalue-1;
+      return *this;
     }
 
     const_iterator operator--(int) {
       const_iterator tmp(*this);
-      tmp.tvalue= this->tvalue-1;
+      tvalue= tvalue-1;
       return tmp;
     }
 
@@ -247,22 +260,24 @@ public:
 	}
 
     unsorted_const_iterator operator++() {
-      return tvalue+1;
+      tvalue= tvalue+1;
+      return *this;
     }
 
     unsorted_const_iterator operator++(int) {
       unsorted_const_iterator tmp(*this);
-      tmp.tvalue= this->tvalue+1;
+      tvalue= tvalue+1;
       return tmp;
     }
 
     unsorted_const_iterator operator--() {
-      return tvalue-1;
+      tvalue= tvalue-1;
+      return *this;
     }
 
     unsorted_const_iterator operator--(int) {
       unsorted_const_iterator tmp(*this);
-      tmp.tvalue= this->tvalue-1;
+      tvalue= tvalue-1;
       return tmp;
     }
   };
@@ -276,5 +291,9 @@ public:
   }
 
 };
+
+template <typename T, typename P> void find_count(sorted_array<T,F> &sa, T &val, P &pred) {
+  
+}
 
 #endif

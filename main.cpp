@@ -78,7 +78,7 @@ std::cout << "---------------------------------------------" << std::endl;
   sa.addElement(-333);
   sa.addElement(11);
   sa.addElement(0);
-  sa.addElement(-333);
+  sa.addElement(-777);
 
   std::cout << "Array per ordine di inserimento:" << '\n';
   for (int i = 0; i < sa.getContents(); i++) {
@@ -116,12 +116,19 @@ std::cout << "---------------------------------------------" << std::endl;
     std::cout << sa(i) << '\n';
   }
 */
-  /*std::cout << "---------------------------------------------------" << '\n';
+  std::cout << "---------------------------------------------------" << '\n';
 
-  sorted_array<int,maggiore>::unsorted_const_iterator i, ie;
-
-  for(i= sa.ubegin(), ie= sa.uend(); i != ie++; i++) {
+  sorted_array<int,maggiore>::const_iterator i, ie;
+  i= sa.begin();
+  ie= sa.end();
+  
+  for(i; i != ie; i++) {
     std::cout << *i << std::endl;
-  }*/
+  }
+
+  std::cout << "----------------------------------------------------" << '\n';
+
+  std::cout << *ie << std::endl;
+
   return 0;
 }
