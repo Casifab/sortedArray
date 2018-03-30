@@ -292,8 +292,13 @@ public:
 
 };
 
-template <typename T, typename P> void find_count(sorted_array<T,F> &sa, T &val, P &pred) {
-  
+template <typename T, typename F, typename P> void find_count(sorted_array<T,F> &sa, T val, P pred) {
+  int count= 0;
+  for(int i= 0; i < sa.getContents(); i++) {
+    if(pred(sa[i], val))
+      count++;
+  }
+  std::cout << "Trovati " << count << " elementi che soddisfano il predicato" << std::endl;
 }
 
 #endif

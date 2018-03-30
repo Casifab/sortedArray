@@ -10,9 +10,9 @@ struct maggiore {
   }
 };
 
-struct vecchiaia {
-  bool operator()(const persona &a, const persona &b) const {
-    return a.eta > b.eta;
+struct multiplo {
+  bool operator()(const int a, const int b) const {
+    return ((a%b) == 0);
   }
 };
 
@@ -74,11 +74,11 @@ std::cout << "---------------------------------------------" << std::endl;
 
   sa.addElement(3412);
   sa.addElement(8);
-  sa.addElement(0);
+  sa.addElement(30);
   sa.addElement(-333);
-  sa.addElement(11);
-  sa.addElement(0);
   sa.addElement(-777);
+  sa.addElement(4);
+  sa.addElement(11);
 
   std::cout << "Array per ordine di inserimento:" << '\n';
   for (int i = 0; i < sa.getContents(); i++) {
@@ -118,9 +118,9 @@ std::cout << "---------------------------------------------" << std::endl;
 */
   std::cout << "---------------------------------------------------" << '\n';
 
-  sorted_array<int,maggiore>::const_iterator i, ie;
-  i= sa.begin();
-  ie= sa.end();
+  sorted_array<int,maggiore>::unsorted_const_iterator i, ie;
+  i= sa.ubegin();
+  ie= sa.uend();
   
   for(i; i != ie; i++) {
     std::cout << *i << std::endl;
@@ -129,6 +129,12 @@ std::cout << "---------------------------------------------" << std::endl;
   std::cout << "----------------------------------------------------" << '\n';
 
   std::cout << *ie << std::endl;
+
+  std::cout << "----------------------------------------------------" << '\n';
+
+  multiplo mul;
+
+  find_count(sa, 4, mul);
 
   return 0;
 }
