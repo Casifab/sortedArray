@@ -4,6 +4,11 @@
 #include <string>
 #include <algorithm>
 
+/**
+@file main.cpp
+@brief File di test per la classe templata sortedarray.h
+**/
+
 struct maggiore {
   bool operator()(const int a, const int b) const {
     return a > b;
@@ -16,8 +21,14 @@ struct multiplo {
   }
 };
 
+struct vecchiaia {
+  bool operator()(const persona &p1, const persona &p2) const {
+    return (p1.eta > p2.eta);
+  }
+};
+
 int main(int argc, char const *argv[]) {
-/*
+
   persona p1= {"Francesca", "Baro", 22, 0};
   persona p2= {"Fabio", "Casiraghi", 22, 1};
   persona p3= {"peirpaloeo", "asfcasa", 45, 0};
@@ -29,16 +40,16 @@ int main(int argc, char const *argv[]) {
   pers.addElement(p3);
   pers.addElement(p4);
 
-  std::cout << "Array per ordine di inserimento:" << '\n';
+  std::cout << "PERS inserimento" << '\n';
   for (int i = 0; i < pers.getContents(); i++) {
-    pers(i).printPerson();
+    std::cout << pers(i) << std::endl;
   }
 
   std::cout << "---------------------------------------------" << std::endl;
 
-  std::cout << "Array per ordine di età:" << '\n';
+  std::cout << "PERS età" << '\n';
   for (int i= 0; i < pers.getContents(); ++i) {
-    pers[i].printPerson();
+    std::cout << pers[i] << std::endl;
   }
 
 std::cout << "---------------------------------------------" << std::endl;
@@ -47,9 +58,9 @@ std::cout << "---------------------------------------------" << std::endl;
   persona pp= {"Gigio", "Cuo", 30, 1};
   pers.addElement(pp);
 
-  std::cout << "Array per ordine di età:" << '\n';
+  std::cout << "PERS età" << '\n';
   for (int i = 0; i < pers.getContents(); i++) {
-    pers[i].printPerson();
+    std::cout << pers[i] << std::endl;
   }
 
 std::cout << "---------------------------------------------" << std::endl;
@@ -57,14 +68,13 @@ std::cout << "---------------------------------------------" << std::endl;
 
   sorted_array<persona,vecchiaia> asf= pers;
 
-  std::cout << "Array per ordine di età:" << '\n';
+  std::cout << "ASF età" << '\n';
   for (int i = 0; i < asf.getContents(); i++) {
-    asf[i].printPerson();
+    std::cout << asf[i] << std::endl;
   }
 
 std::cout << "---------------------------------------------" << std::endl;
 
-*/
   sorted_array<int,maggiore> sa(25);
   int array_int[]= {43,6,100,1,11};
 
@@ -91,7 +101,7 @@ std::cout << "---------------------------------------------" << std::endl;
     std::cout << sa[i] << '\n';
   }
 
-  /*sa.clear();
+  sa.clear();
 
   std::cout << "Array per ordine di inserimento:" << '\n';
   for (int i = 0; i < sa.getContents(); i++) {
@@ -115,7 +125,7 @@ std::cout << "---------------------------------------------" << std::endl;
   for (int i = 0; i < sa.getContents(); i++) {
     std::cout << sa(i) << '\n';
   }
-*/
+
   std::cout << "---------------------------------------------------" << '\n';
 
   sorted_array<int,maggiore>::unsorted_const_iterator i, ie;

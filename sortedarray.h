@@ -14,8 +14,8 @@
 /**
 @brief Sorted Array templato
 
-Classe che rappresenta un array di elementi che posso essere letti per ordine
-di inserimento in memoria o per ordine logico, dettato dal funtore funct
+Classe che rappresenta un array di elementi che possono essere letti per ordine
+di inserimento in memoria o per ordine logico dettato dal funtore funct
 **/
 template <typename T, typename F= std::less<T> > class sorted_array {
 
@@ -32,15 +32,36 @@ private:
 
 public:
 
+  /**
+  @brief Costruttore di default
+
+  Costruttore di default che inizializza semplicemente l'array
+  **/
   sorted_array(): size(0), nd_array(0), contents(0), pos_array(0) {
   }
 
+  /**
+  @brief Costruttore secondario
+
+  Costruttore che istanzia un sorted_array di una data dimensione,
+  se la dimensione non viene specificata viene posta a 100
+
+  @param sz Dimensione del sorted_array
+  **/
   explicit sorted_array(unsigned int sz= 100):
     size(sz), nd_array(0), contents(0), pos_array(0) {
     nd_array= new T[size];
     pos_array= new T*[size];
   }
 
+  /**
+  @brief Costruttore copia
+
+  Costruttore che istanzia un sorted_array da un altro passato 
+  come parametro
+
+  @param other sorted_array da copiare
+  **/
   sorted_array(const sorted_array &other):
     size(0), nd_array(0), contents(0), pos_array(0) {
     size= other.getSize();
@@ -57,6 +78,16 @@ public:
     }
   }
 
+  /** 
+
+  @brief Operatore di assegnamento
+
+  Metodo fondamentale per l'istanziazione di un sorted_array tramite
+  operatore di uguaglianza
+
+  @param other sorted_array da assegnare
+  @return reference al nuovo sorted_array
+  **/
   sorted_array &operator=(const sorted_array &other) {
     if(&other != this) {
       sorted_array tmp(other);
@@ -76,7 +107,12 @@ public:
       return *this;
     }
   }
+  
+  /**
+  @brief Distruttore 
 
+  Rimuove il sorted_array dalla memoria
+  **/
   ~sorted_array() {
     delete [] nd_array;
     nd_array= 0;
@@ -86,14 +122,33 @@ public:
     pos_array= 0;
   }
 
+  /**
+  @brief Get Size
+
+  @return Dimensione del sorted_array
+  **/
   unsigned int getSize() const {
     return this->size;
   }
+  
+  /**
+  @brief Get Contents
 
+  @return Elementi contenuti dal sorted_array
+  **/
   unsigned int getContents() const {
     return this->contents;
   }
 
+  /**
+  @brief Funzione per l'aggiunta di un elemento
+
+  Aggiunge l'elemento passato come parametro al sorted_array,
+  nella prima posizione disponibile. Successivamente aggiusta
+  i puntatori per l'ordine logico.
+
+  @param val Valore da inserire nel sorted_array
+  **/
   void addElement(const T &val) {
     if(contents < size) {
       if(contents == 0) {
@@ -118,14 +173,35 @@ public:
     }
   }
 
+  /**
+  @brief Operatore di accesso in sola lettura per ordine logico
+  
+  @param index Indice del sorted_array
+  @return Elemento del sorted_array alla posizione logica uguale a index
+  **/
   T operator[](int index) const {
         return *pos_array[index];
   }
 
+  /**
+  @brief Operatore di accesso in sola lettura per ordine d'inserimento
+  in memoria
+  
+  @param index Indice del sorted_array
+  @return Elemento del sorted_array alla posizione di memorizzazione uguale
+  a index
+  **/
   T operator()(int index) const {
     return nd_array[index];
   }
 
+  /**
+
+  @brief Funzione che svuota il sorted_array
+
+  Funzione che svuota il sorted_array, cancellando i vecchi dati in memoria
+  e riallocando un nuovo sorted_array vuoto
+  **/
   void clear() {
     T *tmp= new T[size];
     delete[] nd_array;
@@ -139,6 +215,12 @@ public:
   class const_iterator;
   class unsorted_const_iterator;
 
+  /**
+  @brief Iteratore costante per l'ordine logico
+
+  Classe che rappresenta un iteratore logico in sola lettura del sorted_array.
+  Scorre gli elementi ordinati secondo il funtore funct
+  **/
   class const_iterator {
   private:
 
@@ -207,14 +289,31 @@ public:
 
   };
 
+  /**
+  @brief Funzione begin per il const_iterator
+
+  @return Puntatore al primo valore logico del sorted_array
+  **/ 
   const_iterator begin() const {
         return const_iterator(pos_array[0]);
   }
 
+  /**
+  @brief Funzione end per il const_iterator
+
+  @return Puntatore all'ultimo valore logico del sorted_array
+  **/ 
   const_iterator end() const {
         return const_iterator(pos_array[contents-1]);
   }
 
+  /**
+  @brief Iteratore costante per l'ordine d'inserimento
+
+  Classe che rappresenta un iteratore per l'ordine d'inserimento
+  in sola lettura del sorted_array.
+  Scorre gli elementi secondo l'ordine in cui sono stati inseriti
+  **/
   class unsorted_const_iterator {
   private:
 
@@ -282,16 +381,40 @@ public:
     }
   };
 
+  /**
+  @brief Funzione begin per l'unsorted_const_iterator
+
+  @return Puntatore al primo valore in memoria del sorted_array
+  **/ 
   unsorted_const_iterator ubegin() const {
     return unsorted_const_iterator(nd_array+0);
   }
 
+  /**
+  @brief Funzione end per l'unsorted_const_iterator
+
+  @return Puntatore all'ultimo valore in memoria del sorted_array
+  **/ 
   unsorted_const_iterator uend() const {
     return unsorted_const_iterator(nd_array+contents-1);
   }
 
 };
 
+/**
+@brief Funzione templata per la conta degli elementi che soddisfano
+un dato predicato all'interno del sorted_array
+
+Funziona che scorre il sorted_array e verifica se e quanti elementi
+verificano un determinato predicato binario insieme al valore 
+passato come parametro.
+Stampa a schermo il numero degli elementi che soddisfano il predicato
+
+@param sa Sorted_array da scorrere
+@param val Secondo valore del predicato binario
+@param pred Predicato binario da applicare tra ogni elemento
+del sorted_array e val
+**/
 template <typename T, typename F, typename P> void find_count(sorted_array<T,F> &sa, T val, P pred) {
   int count= 0;
   for(int i= 0; i < sa.getContents(); i++) {
