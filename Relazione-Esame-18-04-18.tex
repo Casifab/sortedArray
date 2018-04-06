@@ -1,0 +1,27 @@
+\documentclass[11pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[italian]{babel}
+%\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\author{Fabio Casiraghi \\807398 \\ \href{mailto:f.casiraghi@campus.unimib.it} {f.casiraghi@campus.unimib.it}}
+\title{Relazione per l'esame di Programmazione e Amministrazione di Sistema}
+\begin{document}
+\maketitle
+\vspace{2cm}
+
+\section*{Scelte implementative}
+Per la realizzazione del sorted array templato, non era possibile mantenere in memoria
+due copie simultanee dello stesso array. \\
+Ho quindi optato per l'uso di un normale array di elementi T per mantenere l'ordine di memorizzazione,
+mentre un array di puntatori a elementi T per mantenere l'ordine logico. Questa scelta permette
+una gestione più efficiente dell'inserimento e della ricerca ordinata di un elemento all'interno della
+struttura dati.\\
+Per l'inserimento, infatti, è necessario semplicemente scorrere l'array di puntatori per trovare la 
+posizione adatta al nuovo elemento e successivamente aggiornare i puntatori da quella posizione fino al fondo
+della struttura. Il tutto può migliorare significativamente i tempi nel caso di un array 
+con un numero molto elevato di elementi.\\
+Per la ricerca ordinata, invece, basterà semplicemente scorrere l'array di puntatori finchè non viene 
+trovato l'elemento desiderato. Questo metodo rispecchia fedelmente le normali procedure di ricerca e inserimento 
+in un array.
+\section*{Differenze con i tradizionali array}
+\end{document}

@@ -128,10 +128,11 @@ std::cout << "---------------------------------------------" << std::endl;
 
   std::cout << "---------------------------------------------------" << '\n';
 
-  sorted_array<int,maggiore>::unsorted_const_iterator i, ie;
-  i= sa.ubegin();
-  ie= sa.uend();
-  
+  sorted_array<persona,vecchiaia>::const_iterator i, ie;
+  i= pers.begin();
+  ie= pers.end();
+
+  std::cout << "CONST ITERATOR SU OGGETTI TIPO PERSONA \n" << '\n';
   for(i; i != ie; i++) {
     std::cout << *i << std::endl;
   }
