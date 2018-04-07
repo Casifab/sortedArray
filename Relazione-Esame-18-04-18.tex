@@ -24,4 +24,9 @@ Per la ricerca ordinata, invece, basterà semplicemente scorrere l'array di punt
 trovato l'elemento desiderato. Questo metodo rispecchia fedelmente le normali procedure di ricerca e inserimento 
 in un array.
 \section*{Differenze con i tradizionali array}
+La sostanziale differenza tra il sortedarray e uno tradizionale è l'impossibilità di scrivere dati in posizioni specifiche dell'array. Infatti sia gli operatori () e [] che i due iteratori sono costanti e in sola lettura, inoltre i nuovi elementi vengono sempre aggiunti in coda nell'array per memorizzazione e successivamente vengono aggiornati i puntatori nell'array per l'ordine logico.\\
+Questa scelta è dovuta principalmente all'idea che un utilizzatore della struttura dati non possa sovrascrivere dati in posizioni random, rompendo così sia l'ordinamento logico che l'ordinamento secondo memorizzazione.\\
+Seguendo la logica di cui sopra, non è nemmeno possibile la rimozione dalla memoria di dati in posizione specifiche, ma è solo possibile svuotare completamente la struttura dati.
+\section*{Const_iterator e Unsorted_const_iterator}
+Per la scelta del tipo dei due iteratori si è pensato che il random iterator fosse il più adatto allo scopo. Infatti 
 \end{document}
