@@ -27,6 +27,15 @@ in un array.
 La sostanziale differenza tra il sortedarray e uno tradizionale è l'impossibilità di scrivere dati in posizioni specifiche dell'array. Infatti sia gli operatori () e [] che i due iteratori sono costanti e in sola lettura, inoltre i nuovi elementi vengono sempre aggiunti in coda nell'array per memorizzazione e successivamente vengono aggiornati i puntatori nell'array per l'ordine logico.\\
 Questa scelta è dovuta principalmente all'idea che un utilizzatore della struttura dati non possa sovrascrivere dati in posizioni random, rompendo così sia l'ordinamento logico che l'ordinamento secondo memorizzazione.\\
 Seguendo la logica di cui sopra, non è nemmeno possibile la rimozione dalla memoria di dati in posizione specifiche, ma è solo possibile svuotare completamente la struttura dati.
-\section*{Const_iterator e Unsorted_const_iterator}
-Per la scelta del tipo dei due iteratori si è pensato che il random iterator fosse il più adatto allo scopo. Infatti 
+\section*{Const-iterator e Unsorted-const-iterator}
+Per la scelta del tipo dei due iteratori si è pensato che il random iterator fosse il più adatto allo scopo. Infatti per rendere il più possibile l'utilizzo della struttura simile ad un array tradizionale, è necessario che si possano creare puntatori ad elementi in posizioni specifiche del sortedarray.\\
+Entrambi gli iteratori sono costanti, e quindi in sola lettura. Il motivo è il medesimo della sezione precedente, si vuole impedire all'utente di modificare la correttezza dell'ordinamento di memorizzazione o logico.\\
+Per evitare collisione tra i metodi begin() e end() dei due iteratori, che avrebbero avuto la medesima signature, 
+si è deciso di nominare i metodi, per l'unsorted-const-iterator, ubegin() e uend().
+\section*{Strumenti di sviluppo utilizzati}
+\begin{itemize}
+\item \textbf{g++} versione 5.4.0 per Linux (Mint 18.3 Sylvia)
+\item \textbf{Valgrind} versione 3.11.0
+\item \textbf{GNU make} versione 4.1
+\end{itemize} 
 \end{document}
