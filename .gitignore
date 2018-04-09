@@ -7,3 +7,5 @@ Relazione-Esame-18-04-18.out
 Relazione-Esame-18-04-18.pdf
 Relazione-Esame-18-04-18.synctex.gz
 .DS_Store
+*.o
+main

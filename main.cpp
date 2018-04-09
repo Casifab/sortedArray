@@ -90,18 +90,19 @@ std::cout << "---------------------------------------------" << std::endl;
   sa.addElement(4);
   sa.addElement(11);
 
-  std::cout << "Array per ordine di inserimento:" << '\n';
-  for (int i = 0; i < sa.getContents(); i++) {
-    std::cout << sa(i) << '\n';
-  }
-
-  std::cout << "---------------------------------------------------" << '\n';
   std::cout << "Array per ordine logico:" << '\n';
   for (int i = 0; i < sa.getContents(); i++) {
     std::cout << sa[i] << '\n';
   }
 
-  sa.clear();
+  std::cout << "---------------------------------------------------" << '\n';
+
+  std::cout << "Array per ordine di inserimento:" << '\n';
+  for (int i = 0; i < sa.getContents(); i++) {
+    std::cout << sa(i) << '\n';
+  }
+
+  /*sa.clear();
 
   std::cout << "Array per ordine di inserimento:" << '\n';
   for (int i = 0; i < sa.getContents(); i++) {
@@ -126,26 +127,30 @@ std::cout << "---------------------------------------------" << std::endl;
     std::cout << sa(i) << '\n';
   }
 
-  std::cout << "---------------------------------------------------" << '\n';
+  */std::cout << "---------------------------------------------------" << '\n';
 
-  sorted_array<persona,vecchiaia>::const_iterator i, ie;
-  i= pers.begin();
-  ie= pers.end();
+  sorted_array<int,maggiore>::unsorted_const_iterator i, ie;
+  i= sa.ubegin();
+  ie= sa.uend();
 
-  std::cout << "CONST ITERATOR SU OGGETTI TIPO PERSONA \n" << '\n';
-  for(i; i != ie; i++) {
-    std::cout << *i << std::endl;
-  }
+  std::cout << "CONST ITERATOR SU OGGETTI TIPO PERSONA" << '\n';
 
-  std::cout << "----------------------------------------------------" << '\n';
-
-  std::cout << *ie << std::endl;
-
-  std::cout << "----------------------------------------------------" << '\n';
+  std::cout << *i << '\n';
+  std::cout << *ie << "\n";
+  std::cout << "---------------------------------" << '\n';
+  std::cout << *(i+2) << '\n';
+  std::cout << *(ie-3) << '\n';
+  std::cout << "---------------------------------" << '\n';
+  std::cout << i[6] << '\n';
+  std::cout << ie[6] << '\n';
+  std::cout << "---------------------------------" << '\n';
+  i+= 7; ie-= 5;
+  std::cout << *i << '\n';
+  std::cout << *ie << '\n';
 
   multiplo mul;
 
-  find_count(sa, 4, mul);
+  find_count(sa, 5, mul);
 
   return 0;
 }

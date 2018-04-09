@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstddef>
 #include <functional>
+#include <iterator>
 
 /**
 @file sortedarray.h
@@ -57,7 +58,7 @@ public:
   /**
   @brief Costruttore copia
 
-  Costruttore che istanzia un sorted_array da un altro passato 
+  Costruttore che istanzia un sorted_array da un altro passato
   come parametro
 
   @param other sorted_array da copiare
@@ -78,7 +79,7 @@ public:
     }
   }
 
-  /** 
+  /**
 
   @brief Operatore di assegnamento
 
@@ -107,9 +108,9 @@ public:
       return *this;
     }
   }
-  
+
   /**
-  @brief Distruttore 
+  @brief Distruttore
 
   Rimuove il sorted_array dalla memoria
   **/
@@ -130,7 +131,7 @@ public:
   unsigned int getSize() const {
     return this->size;
   }
-  
+
   /**
   @brief Get Contents
 
@@ -175,7 +176,7 @@ public:
 
   /**
   @brief Operatore di accesso in sola lettura per ordine logico
-  
+
   @param index Indice del sorted_array
   @return Elemento del sorted_array alla posizione logica uguale a index
   **/
@@ -186,7 +187,7 @@ public:
   /**
   @brief Operatore di accesso in sola lettura per ordine d'inserimento
   in memoria
-  
+
   @param index Indice del sorted_array
   @return Elemento del sorted_array alla posizione di memorizzazione uguale
   a index
@@ -226,27 +227,32 @@ public:
 
     friend class sorted_array;
     T* const *tvalue;
+    T* const *first_val;
 
-    const_iterator(T* const &val): tvalue(&val) {}
+    const_iterator(T* const &val, T* const &f_elem): tvalue(&val), first_val(&f_elem) {}
 
   public:
 
-    typedef std::bidirectional_iterator_tag   iterator_category;
+    typedef std::random_access_iterator_tag   iterator_category;
 		typedef T*                                 value_type;
 		typedef ptrdiff_t                         difference_type;
 		typedef const T**                          pointer;
 		typedef const T&                          reference;
 
-    const_iterator(): tvalue(0) {}
-    const_iterator(const const_iterator &other): tvalue(other.tvalue) {}
+    const_iterator(): tvalue(0), first_val(0) {}
+    const_iterator(const const_iterator &other): tvalue(other.tvalue), first_val(other.first_val) {}
 
     const_iterator& operator=(const const_iterator &other) {
-      tvalue= other.tvalue;
-      return *this;
+      if(this != &other) {
+        tvalue= other.tvalue;
+        first_val= other.first_val;
+        return *this;
+      }
     }
 
     ~const_iterator() {
       tvalue= 0;
+      first_val= 0;
     }
 
     reference operator*() const {
@@ -255,6 +261,10 @@ public:
 
     pointer operator->() const {
       return &(*tvalue);
+    }
+
+    reference operator[](int index) {
+      return (**(first_val+index));
     }
 
     bool operator==(const const_iterator &other) const {
@@ -287,24 +297,62 @@ public:
       return tmp;
     }
 
+    const_iterator operator+(int offset) {
+      return const_iterator(*(tvalue + offset), *this->first_val);
+    }
+
+    const_iterator operator-(int offset) {
+      return const_iterator(*(tvalue - offset), *this->first_val);
+    }
+
+    const_iterator& operator+=(int offset) {
+      tvalue+= offset;
+      return *this;
+    }
+
+    const_iterator& operator-=(int offset) {
+      tvalue-= offset;
+      return *this;
+    }
+
+    difference_type operator-(const const_iterator &other) {
+      return tvalue - other.tvalue;
+    }
+
+    bool operator>(const const_iterator &other) const {
+      return tvalue > other.tvalue;
+    }
+
+    bool operator>=(const const_iterator &other) const {
+      return tvalue >= other.tvalue;
+    }
+
+    bool operator<(const const_iterator &other) const {
+      return tvalue < other.tvalue;
+    }
+
+    bool operator<=(const const_iterator &other) const {
+      return tvalue <= other.tvalue;
+    }
+
   };
 
   /**
   @brief Funzione begin per il const_iterator
 
   @return Puntatore al primo valore logico del sorted_array
-  **/ 
+  **/
   const_iterator begin() const {
-        return const_iterator(pos_array[0]);
+        return const_iterator(pos_array[0], pos_array[0]);
   }
 
   /**
   @brief Funzione end per il const_iterator
 
   @return Puntatore all'ultimo valore logico del sorted_array
-  **/ 
+  **/
   const_iterator end() const {
-        return const_iterator(pos_array[contents-1]);
+        return const_iterator(pos_array[contents-1], pos_array[0]);
   }
 
   /**
@@ -319,27 +367,32 @@ public:
 
     friend class sorted_array;
     const T *tvalue;
+    const T *first_val;
 
-    unsorted_const_iterator(const T *val): tvalue(val) {}
+    unsorted_const_iterator(const T *val, const T *f_elem): tvalue(val), first_val(f_elem) {}
 
   public:
 
-    typedef std::bidirectional_iterator_tag   iterator_category;
+    typedef std::random_access_iterator_tag   iterator_category;
 		typedef T                                 value_type;
 		typedef ptrdiff_t                         difference_type;
 		typedef const T*                          pointer;
 		typedef const T&                          reference;
 
-    unsorted_const_iterator(): tvalue(0) {}
-    unsorted_const_iterator(const unsorted_const_iterator &other): tvalue(other.tvalue) {}
+    unsorted_const_iterator(): tvalue(0), first_val(0) {}
+    unsorted_const_iterator(const unsorted_const_iterator &other): tvalue(other.tvalue), first_val(other.first_val) {}
 
     unsorted_const_iterator& operator=(const unsorted_const_iterator &other) {
-      tvalue= other.tvalue;
-      return *this;
+      if(this != &other) {
+        tvalue= other.tvalue;
+        first_val= other.first_val;
+        return *this;
+      }
     }
 
     ~unsorted_const_iterator() {
       tvalue= 0;
+      first_val= 0;
     }
 
     reference operator*() const {
@@ -350,13 +403,17 @@ public:
       return &(tvalue);
     }
 
-	bool operator==(const unsorted_const_iterator &other) const {
-		return tvalue == other.tvalue;
-	}
+    reference operator[](int index) {
+      return (*(first_val+index));
+    }
 
-	bool operator!=(const unsorted_const_iterator &other) const {
-		return tvalue != other.tvalue;
-	}
+  	bool operator==(const unsorted_const_iterator &other) const {
+  		return tvalue == other.tvalue;
+  	}
+
+  	bool operator!=(const unsorted_const_iterator &other) const {
+  		return tvalue != other.tvalue;
+  	}
 
     unsorted_const_iterator operator++() {
       tvalue= tvalue+1;
@@ -379,24 +436,63 @@ public:
       tvalue= tvalue-1;
       return tmp;
     }
+
+    unsorted_const_iterator operator+(int offset) {
+      return unsorted_const_iterator(tvalue+offset, this->first_val);
+    }
+
+    unsorted_const_iterator operator-(int offset) {
+      return unsorted_const_iterator(tvalue-offset, this->first_val);
+    }
+
+    unsorted_const_iterator& operator+=(int offset) {
+      tvalue+= offset;
+      return *this;
+    }
+
+    unsorted_const_iterator& operator-=(int offset) {
+      tvalue-= offset;
+      return *this;
+    }
+
+    difference_type operator-(const unsorted_const_iterator &other) {
+      return tvalue - other.tvalue;
+    }
+
+    bool operator>(const unsorted_const_iterator &other) const {
+      return tvalue > other.tvalue;
+    }
+
+    bool operator>=(const unsorted_const_iterator &other) const {
+      return tvalue >= other.tvalue;
+    }
+
+    bool operator<(const unsorted_const_iterator &other) const {
+      return tvalue < other.tvalue;
+    }
+
+    bool operator<=(const unsorted_const_iterator &other) const {
+      return tvalue <= other.tvalue;
+    }
+
   };
 
   /**
   @brief Funzione begin per l'unsorted_const_iterator
 
   @return Puntatore al primo valore in memoria del sorted_array
-  **/ 
+  **/
   unsorted_const_iterator ubegin() const {
-    return unsorted_const_iterator(nd_array+0);
+    return unsorted_const_iterator(nd_array+0, nd_array+0);
   }
 
   /**
   @brief Funzione end per l'unsorted_const_iterator
 
   @return Puntatore all'ultimo valore in memoria del sorted_array
-  **/ 
+  **/
   unsorted_const_iterator uend() const {
-    return unsorted_const_iterator(nd_array+contents-1);
+    return unsorted_const_iterator(nd_array+contents-1, nd_array+0);
   }
 
 };
@@ -406,7 +502,7 @@ public:
 un dato predicato all'interno del sorted_array
 
 Funziona che scorre il sorted_array e verifica se e quanti elementi
-verificano un determinato predicato binario insieme al valore 
+verificano un determinato predicato binario insieme al valore
 passato come parametro.
 Stampa a schermo il numero degli elementi che soddisfano il predicato
 
