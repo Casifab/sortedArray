@@ -15,7 +15,7 @@ struct persona {
   std::string nome;
   std::string cognome;
   unsigned int eta;
-  bool sesso; //true= maschio, false= femmina
+  bool sesso; //true= femmina, false= maschio
 };
 
 std::ostream& operator<<(std::ostream &os, const persona &p)  {

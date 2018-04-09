@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage[utf8x]{inputenc}
 \usepackage[italian]{babel}
-%\usepackage[T1]{fontenc}
+\usepackage[T1]{fontenc}
 \usepackage{hyperref}
 \author{Fabio Casiraghi \\807398 \\ \href{mailto:f.casiraghi@campus.unimib.it} {f.casiraghi@campus.unimib.it}}
 \title{Relazione per l'esame di Programmazione e Amministrazione di Sistema}
@@ -24,17 +24,32 @@ Per la ricerca ordinata, invece, basterà semplicemente scorrere l'array di punt
 trovato l'elemento desiderato. Questo metodo rispecchia fedelmente le normali procedure di ricerca e inserimento 
 in un array.
 \section*{Differenze con i tradizionali array}
-La sostanziale differenza tra il sortedarray e uno tradizionale è l'impossibilità di scrivere dati in posizioni specifiche dell'array. Infatti sia gli operatori () e [] che i due iteratori sono costanti e in sola lettura, inoltre i nuovi elementi vengono sempre aggiunti in coda nell'array per memorizzazione e successivamente vengono aggiornati i puntatori nell'array per l'ordine logico.\\
+La sostanziale differenza tra il sortedarray e uno tradizionale è l'impossibilità di scrivere dati in posizioni specifiche dell'array. Infatti sia gli operatori ( ) e [ ] che i due iteratori sono costanti e in sola lettura, inoltre i nuovi elementi vengono sempre aggiunti in coda nell'array per memorizzazione e successivamente vengono aggiornati i puntatori nell'array per l'ordine logico.\\
 Questa scelta è dovuta principalmente all'idea che un utilizzatore della struttura dati non possa sovrascrivere dati in posizioni random, rompendo così sia l'ordinamento logico che l'ordinamento secondo memorizzazione.\\
 Seguendo la logica di cui sopra, non è nemmeno possibile la rimozione dalla memoria di dati in posizione specifiche, ma è solo possibile svuotare completamente la struttura dati.
 \section*{Const-iterator e Unsorted-const-iterator}
 Per la scelta del tipo dei due iteratori si è pensato che il random iterator fosse il più adatto allo scopo. Infatti per rendere il più possibile l'utilizzo della struttura simile ad un array tradizionale, è necessario che si possano creare puntatori ad elementi in posizioni specifiche del sortedarray.\\
 Entrambi gli iteratori sono costanti, e quindi in sola lettura. Il motivo è il medesimo della sezione precedente, si vuole impedire all'utente di modificare la correttezza dell'ordinamento di memorizzazione o logico.\\
-Per evitare collisione tra i metodi begin() e end() dei due iteratori, che avrebbero avuto la medesima signature, 
-si è deciso di nominare i metodi, per l'unsorted-const-iterator, ubegin() e uend().
+Per evitare collisione tra i metodi begin( ) e end( ) dei due iteratori, che avrebbero avuto la medesima signature, 
+si è deciso di nominare i metodi, per l'unsorted-const-iterator, ubegin( ) e uend( ).\\
+Oltre all'elemento effettivo a cui puntano, in entrambi i tipi di iteratore viene memorizzata anche la prima casella 
+dell'array su cui scorrono (rispettivamente pos-array per il const-iterator e nd-array per l'unsorted-const-iterator).
+La memorizzazione di questo parametro è necessaria per poter utilizzare l'operator[ ], in modo tale da poter sempre avere un riferimento di partenza per la ricerca randomizzata dei valori.\\
+Data la sostanziale differenza logica tra i due tipi di iteratori, non è sembrato necessario sviluppare dei metodi 
+per il confronto o la conversione tra tipi diversi.
+\section*{Breve descrizione dei file}
+\subsection*{sortedarray.h}
+Contiene la definizione dell'array templato, elemento centrale del progetto.
+\subsection*{main.cpp}
+File contenente i principali casi di test per la classe sorted\_array. All'interno del file vengono creati vari 
+funtori da potersi utilizzare. Vengono inoltre usate struct custom presenti nel file dati\_prova.h.
+\subsection*{dati\_prova.h}
+File contenente la definizione della struct custom persona, che rappresenta la persona tramite due stringhe, una per 
+il nome e una per il cognome, un intero che simboleggia l'età e un valore booleano che rappresenta il sesso 
+(1 se femmina, 0 se maschio).
 \section*{Strumenti di sviluppo utilizzati}
 \begin{itemize}
-\item \textbf{g++} versione 5.4.0 per Linux (Mint 18.3 Sylvia)
+\item \textbf{G++} versione 5.4.0 per Linux (Mint 18.3 Sylvia)
 \item \textbf{Valgrind} versione 3.11.0
 \item \textbf{GNU make} versione 4.1
 \end{itemize} 

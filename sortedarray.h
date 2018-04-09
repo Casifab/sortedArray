@@ -520,4 +520,35 @@ template <typename T, typename F, typename P> void find_count(sorted_array<T,F> 
   std::cout << "Trovati " << count << " elementi che soddisfano il predicato" << std::endl;
 }
 
+/**
+@brief Operatore di ostream per il sorted_array
+
+Stampa gli elementi del sorted array per ordine logico, ognuno su
+una nuova riga
+
+@param os Operatore di iostream
+@param sa Sorted_array da stampare
+**/
+template <typename T, typename F> std::ostream& operator<<(std::ostream &os, const sorted_array<T,F> &sa) {
+  for(int i= 0; i < sa.getContents(); i++) {
+    std::cout << sa[i] << std::endl;
+  }
+
+  return os;
+}
+
+/**
+@brief Funzione per la stampa di un sorted_array
+
+Stampa gli elementi del sorted_array per ordine di memorizzazione,
+ognuno su una nuova riga
+
+@param sa Sorted_array da stampare
+**/
+template <typename T, typename F> void printMem(const sorted_array<T,F> &sa) {
+  for(int i= 0; i < sa.getContents(); i++) {
+    std::cout << sa(i) << std::endl;
+  }
+}
+
 #endif
