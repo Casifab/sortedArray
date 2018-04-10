@@ -48,11 +48,17 @@ public:
   se la dimensione non viene specificata viene posta a 100
 
   @param sz Dimensione del sorted_array
+
+  @throw Eccezione di allocazione di memoria
   **/
-  explicit sorted_array(unsigned int sz= 100):
-    size(sz), nd_array(0), contents(0), pos_array(0) {
-    nd_array= new T[size];
-    pos_array= new T*[size];
+  explicit sorted_array(unsigned int sz= 100): size(sz), nd_array(0), contents(0), pos_array(0) {
+    try{
+      nd_array= new T[size];
+      pos_array= new T*[size];
+    } catch(...) {
+      clear();
+      throw;
+    }
   }
 
   /**
@@ -62,20 +68,26 @@ public:
   come parametro
 
   @param other sorted_array da copiare
+
+  @throw Eccezione di allocazione di memoria
   **/
-  sorted_array(const sorted_array &other):
-    size(0), nd_array(0), contents(0), pos_array(0) {
-    size= other.getSize();
-    nd_array= new T[size];
-    contents= other.getContents();
-    pos_array= new T*[size];
+  sorted_array(const sorted_array &other): size(0), nd_array(0), contents(0), pos_array(0) {
+    try {
+      size= other.getSize();
+      nd_array= new T[size];
+      contents= other.getContents();
+      pos_array= new T*[size];
 
-    for(int i= 0; i < contents; i++) {
-      nd_array[i]= other.nd_array[i];
-    }
+      for(int i= 0; i < contents; i++) {
+        nd_array[i]= other.nd_array[i];
+      }
 
-    for(int i= 0; i < contents; i++) {
-      pos_array[i]= other.pos_array[i];
+      for(int i= 0; i < contents; i++) {
+        pos_array[i]= other.pos_array[i];
+      }
+    } catch(...) {
+      clear();
+      throw;
     }
   }
 
@@ -202,15 +214,21 @@ public:
 
   Funzione che svuota il sorted_array, cancellando i vecchi dati in memoria
   e riallocando un nuovo sorted_array vuoto
+
+  @throw Eccezione di allocazione di memoria
   **/
   void clear() {
-    T *tmp= new T[size];
-    delete[] nd_array;
-    nd_array= tmp;
-    contents= 0;
-    T* *tmpPos= new T*[size];
-    delete[] pos_array;
-    pos_array= tmpPos;
+    try {
+      delete[] nd_array;
+      T *tmp= new T[size];
+      nd_array= tmp;
+      contents= 0;
+      delete[] pos_array;
+      T* *tmpPos= new T*[size];
+      pos_array= tmpPos;
+    } catch(...) {
+      std::cout << "Errore nell'allocazione della memoria" << '\n';
+    }
   }
 
   class const_iterator;
@@ -526,8 +544,10 @@ template <typename T, typename F, typename P> void find_count(sorted_array<T,F> 
 Stampa gli elementi del sorted array per ordine logico, ognuno su
 una nuova riga
 
-@param os Operatore di iostream
+@param os Operatore di ostream
 @param sa Sorted_array da stampare
+
+@return Operatore di ostream ridefinito
 **/
 template <typename T, typename F> std::ostream& operator<<(std::ostream &os, const sorted_array<T,F> &sa) {
   for(int i= 0; i < sa.getContents(); i++) {

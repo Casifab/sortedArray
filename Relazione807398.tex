@@ -22,7 +22,11 @@ della struttura. Il tutto può migliorare significativamente i tempi nel caso di
 con un numero molto elevato di elementi.\\
 Per la ricerca ordinata, invece, basterà semplicemente scorrere l'array di puntatori finchè non viene 
 trovato l'elemento desiderato. Questo metodo rispecchia fedelmente le normali procedure di ricerca e inserimento 
-in un array.
+in un array.\\
+All'interno della classe vengono lanciate eccezioni solamente in presenza di new che potrebbero portare a 
+errori nell'allocazione della memoria. Per l'inserimento di un elemento in un array già pieno, invece, si 
+è pensato fosse più adatta una stampa a schermo, per avvisare esplicitamente l'utente del mancato caricamento di 
+uno o più dati.
 \section*{Differenze con i tradizionali array}
 La sostanziale differenza tra il sortedarray e uno tradizionale è l'impossibilità di scrivere dati in posizioni specifiche dell'array. Infatti sia gli operatori ( ) e [ ] che i due iteratori sono costanti e in sola lettura, inoltre i nuovi elementi vengono sempre aggiunti in coda nell'array per memorizzazione e successivamente vengono aggiornati i puntatori nell'array per l'ordine logico.\\
 Questa scelta è dovuta principalmente all'idea che un utilizzatore della struttura dati non possa sovrascrivere dati in posizioni random, rompendo così sia l'ordinamento logico che l'ordinamento secondo memorizzazione.\\
@@ -41,16 +45,16 @@ per il confronto o la conversione tra tipi diversi.
 \subsection*{sortedarray.h}
 Contiene la definizione dell'array templato, elemento centrale del progetto.
 \subsection*{main.cpp}
-File contenente i principali casi di test per la classe sorted\_array. All'interno del file vengono creati vari 
-funtori da potersi utilizzare. Vengono inoltre usate struct custom presenti nel file dati\_prova.h.
+File contenente i principali casi di test per la classe sorted\_array. Vengono inoltre usate struct custom presenti nel file dati\_prova.h.
 \subsection*{dati\_prova.h}
 File contenente la definizione della struct custom persona, che rappresenta la persona tramite due stringhe, una per 
 il nome e una per il cognome, un intero che simboleggia l'età e un valore booleano che rappresenta il sesso 
-(1 se femmina, 0 se maschio).
+(1 se femmina, 0 se maschio). Definizioni di funtori per il confronto sia tra dati di tipo standard che custom.
 \section*{Strumenti di sviluppo utilizzati}
 \begin{itemize}
 \item \textbf{G++} versione 5.4.0 per Linux (Mint 18.3 Sylvia)
 \item \textbf{Valgrind} versione 3.11.0
 \item \textbf{GNU make} versione 4.1
+\item \textbf{Doxygen} versione 1.8.11
 \end{itemize} 
 \end{document}

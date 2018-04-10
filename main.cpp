@@ -1,36 +1,11 @@
 #include "sortedarray.h"
 #include "dati_prova.h"
-#include <iostream>
 #include <string>
 
 /**
 @file main.cpp
 @brief File di test per la classe templata sortedarray.h
 **/
-
-struct maggiore {
-  bool operator()(const int a, const int b) const {
-    return a > b;
-  }
-};
-
-struct multiplo {
-  bool operator()(const int a, const int b) const {
-    return ((a%b) == 0);
-  }
-};
-
-struct vecchiaia {
-  bool operator()(const persona &p1, const persona &p2) const {
-    return (p1.eta > p2.eta);
-  }
-};
-
-struct lungh_cognome {
-  bool operator()(const persona &p1, const persona &p2) const {
-    return (p1.cognome.size() > p2.cognome.size());
-  }
-};
 
 int main(int argc, char const *argv[]) {
 
@@ -135,7 +110,7 @@ std::cout << "---------------------------------------------" << std::endl;
   sa.clear();
 
   std::cout << "Array per ordine logico:" << '\n';
-  std::cout << sa << '\n';
+  std::cout << sa;
 
   std::cout << "---------------------------------------------------" << '\n';
 
