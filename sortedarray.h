@@ -191,7 +191,7 @@ public:
   @param index Indice del sorted_array
   @return Elemento del sorted_array alla posizione logica uguale a index
   **/
-  T operator[](int index) const {
+  const T &operator[](int index) const {
         return *pos_array[index];
   }
 
@@ -363,10 +363,11 @@ public:
   /**
   @brief Funzione end per il const_iterator
 
-  @return Puntatore all'ultimo valore logico del sorted_array
+  @return Puntatore alla cella successiva all'ultimo valore logico
+  del sorted_array
   **/
   const_iterator end() const {
-        return const_iterator(pos_array[contents-1]);
+        return const_iterator(pos_array[contents]);
   }
 
   /**
@@ -500,10 +501,11 @@ public:
   /**
   @brief Funzione end per l'unsorted_const_iterator
 
-  @return Puntatore all'ultimo valore in memoria del sorted_array
+  @return Puntatore alla cella successiva all'ultimo valore in memoria
+  del sorted_array
   **/
   unsorted_const_iterator uend() const {
-    return unsorted_const_iterator(nd_array+contents-1);
+    return unsorted_const_iterator(nd_array+contents);
   }
 
 };
@@ -512,7 +514,7 @@ public:
 @brief Funzione templata per la conta degli elementi che soddisfano
 un dato predicato all'interno del sorted_array
 
-Funziona che scorre il sorted_array e verifica se e quanti elementi
+Scorre il sorted_array e conta se e quanti elementi
 verificano un determinato predicato binario insieme al valore
 passato come parametro.
 Stampa a schermo il numero degli elementi che soddisfano il predicato
@@ -522,7 +524,7 @@ Stampa a schermo il numero degli elementi che soddisfano il predicato
 @param pred Predicato binario da applicare tra ogni elemento
 del sorted_array e val
 **/
-template <typename T, typename F, typename P> void find_count(sorted_array<T,F> &sa, T val, P pred) {
+template <typename T, typename F, typename P> void find_count(const sorted_array<T,F> &sa, const T &val, P pred) {
   int count= 0;
   for(int i= 0; i < sa.getContents(); i++) {
     if(pred(sa[i], val))
