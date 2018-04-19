@@ -26,24 +26,43 @@ in un array.\\
 All'interno della classe vengono lanciate eccezioni solamente in presenza di new che potrebbero portare a 
 errori nell'allocazione della memoria. Per l'inserimento di un elemento in un array già pieno, invece, si 
 è pensato fosse più adatta una stampa a schermo, per avvisare esplicitamente l'utente del mancato caricamento di 
-uno o più dati.
+uno o più dati.\\
+All'interno della classe vengono lanciate e gestite eccezioni all'interno dei metodi dove avviene un'esplicita allocazione di memoria (tramite l'operatore new). Lo scopo è quello di evitare errori di gestione della memoria, 
+mentre l'utente utilizza la libreria in maniera conforme al cuo scopo.
 \section*{Differenze con i tradizionali array}
 La sostanziale differenza tra il sortedarray e uno tradizionale è l'impossibilità di scrivere dati in posizioni specifiche dell'array. Infatti sia gli operatori ( ) e [ ] che i due iteratori sono costanti e in sola lettura, inoltre i nuovi elementi vengono sempre aggiunti in coda nell'array per memorizzazione e successivamente vengono aggiornati i puntatori nell'array per l'ordine logico.\\
 Questa scelta è dovuta principalmente all'idea che un utilizzatore della struttura dati non possa sovrascrivere dati in posizioni random, rompendo così sia l'ordinamento logico che l'ordinamento secondo memorizzazione.\\
-Seguendo la logica di cui sopra, non è nemmeno possibile la rimozione dalla memoria di dati in posizione specifiche, ma è solo possibile svuotare completamente la struttura dati.
+Seguendo la logica di cui sopra, non è nemmeno possibile la rimozione dalla memoria di dati in posizione specifiche, ma è solo possibile svuotare completamente la struttura dati.\\
+Come durante l'utilizzo di un normale array, il tentativo di accesso a locazioni di memoria adiacenti a quelle 
+allocate per il sorted\_array genera degli errori a run-time, che tuttavia non vengono gestiti dalla libreria 
+tramite il lancio di eccezioni. Si lascia infatti che vengano lanciati i messaggi d'errore del compilatore che 
+solitamente appaiono per i tradizionali array (quali effettivamente sono nd\_array e pos\_array).
 \section*{Const-iterator e Unsorted-const-iterator}
 Per la scelta del tipo dei due iteratori si è pensato che il random iterator fosse il più adatto allo scopo. Infatti per rendere il più possibile l'utilizzo della struttura simile ad un array tradizionale, è necessario che si possano creare puntatori ad elementi in posizioni specifiche del sortedarray.\\
 Entrambi gli iteratori sono costanti, e quindi in sola lettura. Il motivo è il medesimo della sezione precedente, si vuole impedire all'utente di modificare la correttezza dell'ordinamento di memorizzazione o logico.\\
 Per evitare collisione tra i metodi begin( ) e end( ) dei due iteratori, che avrebbero avuto la medesima signature, 
 si è deciso di nominare i metodi, per l'unsorted-const-iterator, ubegin( ) e uend( ).\\
-Oltre all'elemento effettivo a cui puntano, in entrambi i tipi di iteratore viene memorizzata anche la prima casella 
-dell'array su cui scorrono (rispettivamente pos-array per il const-iterator e nd-array per l'unsorted-const-iterator).
-La memorizzazione di questo parametro è necessaria per poter utilizzare l'operator[ ], in modo tale da poter sempre avere un riferimento di partenza per la ricerca randomizzata dei valori.\\
 Data la sostanziale differenza logica tra i due tipi di iteratori, non è sembrato necessario sviluppare dei metodi 
-per il confronto o la conversione tra tipi diversi.
+per il confronto o la conversione tra tipi diversi.\\
+All'interno degli iteratori non vengono generate eccezioni, non essendoci allocazioni tramite new o altre manipolazioni della memoria. L'iterazione su elementi allocati ma non inizializzati o al di fuori della memoria 
+allocata per il sorted\_array potrebbe generare errori a run-time o rilevabili da valgrind. Non viene considerato 
+obiettivo della libreria gestire questi possibili errori, poichè si considera buona pratica evitare, solitamente, di 
+accedere a locazioni di memoria non esplicitamente allocate. Il dovere di evitare la generazione di questi errori 
+viene quindi lasciata all'utente. 
 \section*{Breve descrizione dei file}
 \subsection*{sortedarray.h}
-Contiene la definizione dell'array templato, elemento centrale del progetto.
+Contiene la definizione dell'array templato, elemento centrale del progetto. Il file contiene la classe 
+sorted\_array con all'interno le definizioni dei due iteratori, dichiarati friend della classe superiore, in 
+modo che essa possa utilizzare i suoi metodi privati per la costruzione di iteratori.\\
+Oltre alla classe sorted\_array sono presenti le definizioni di tre funzioni globali:
+\begin{itemize}
+\item \textbf{find\_count} funzione che stampa a schermo quanti elementi T del sorted\_array soddisfano il predicato 
+passato come parametro, applicato tra l'elemento del sorted\_array e quello T passato come parametro alla funzione. 
+La funzione scorre in ordine logico tutti gli elementi memorizzati all'interno dell'array e tiene conto di quello che generano una risposta booleana positiva. Restituisce una stringa con il conto dei predicati.
+\item \textbf{operator<<} operatore di ostream per il sorted\_array, che stampa i dati in ordine logico.
+\item \textbf{printMem} funzione che vuole emulare un operatore di ostrem, per poter stampare con una sola istruzione 
+i dati anche in ordine di memorizzazione
+\end{itemize}
 \subsection*{main.cpp}
 File contenente i principali casi di test per la classe sorted\_array. Vengono inoltre usate struct custom presenti nel file dati\_prova.h.
 \subsection*{dati\_prova.h}

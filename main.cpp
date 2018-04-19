@@ -40,7 +40,7 @@ int main(int argc, char const *argv[]) {
   std::cout << "PERS inserimento" << '\n';
   printMem(pers);
 
-std::cout << "---------------------------------------------" << std::endl;
+  std::cout << "---------------------------------------------" << std::endl;
 
 
   persona pp= {"Gigio", "Cuo", 30, 1};
@@ -49,10 +49,11 @@ std::cout << "---------------------------------------------" << std::endl;
   std::cout << "PERS età" << '\n';
   std::cout << pers << std::endl;
 
-std::cout << "---------------------------------------------" << std::endl;
+  std::cout << "---------------------------------------------" << std::endl;
 
 
-  sorted_array<persona,lungh_cognome> asf= pers;
+  sorted_array<persona,lungh_cognome> asf(50);
+  asf= pers;
 
   std::cout << "ASF età" << '\n';
   std::cout << asf << std::endl;
@@ -84,26 +85,42 @@ std::cout << "---------------------------------------------" << std::endl;
 
   std::cout << "---------------------------------------------------" << '\n';
 
-  sorted_array<int,maggiore>::unsorted_const_iterator i, ie;
-  i= sa.ubegin();
-  ie= sa.uend();
+  sorted_array<int,maggiore>::const_iterator i, ie;
+  i= sa.begin();
+  ie= sa.end();
 
   std::cout << "CONST ITERATOR SU OGGETTI TIPO PERSONA" << '\n';
 
   std::cout << *i << '\n';
   std::cout << *ie << "\n";
   std::cout << "---------------------------------" << '\n';
+  if(ie>i)
+    std::cout << "true" << '\n';
+  else
+    std::cout << "false" << '\n';
+
+  if(*ie>*i)
+    std::cout << "true" << '\n';
+  else
+    std::cout << "false" << '\n';
+  std::cout << "---------------------------------" << '\n';
   std::cout << *(i+2) << '\n';
   std::cout << *(ie-3) << '\n';
   std::cout << "---------------------------------" << '\n';
   std::cout << i[6] << '\n';
-  std::cout << ie[6] << '\n';
+  std::cout << ie[-4] << '\n';
   std::cout << "---------------------------------" << '\n';
   i+= 7; ie-= 5;
   std::cout << *i << '\n';
   std::cout << *ie << '\n';
-
-  std::cout << (i<ie) << '\n';
+  std::cout << "----------------------------------" << '\n';
+  std::cout << i[3] << '\n';
+  std::cout << ie[2] << '\n';
+  std::cout << "----------------------------------" << '\n';
+  if(i<ie)
+    std::cout << "true" << '\n';
+  else
+    std::cout << "false" << '\n';
 
   std::cout << "------------------------------------" << '\n';
 
