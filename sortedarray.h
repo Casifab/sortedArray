@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <functional>
 #include <iterator>
+#include <stdexcept>
 
 /**
 @file sortedarray.h
